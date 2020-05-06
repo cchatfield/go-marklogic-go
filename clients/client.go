@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strconv"
 
-	digestAuth "github.com/ryanjdew/http-digest-auth-client"
+	digestAuth "github.com/cchatfield/http-digest-auth-client"
 )
 
 // Authentication options
