@@ -1,4 +1,6 @@
 github.com/cchatfield/http-digest-auth-client v0.0.0-20190515222821-779d3d49c2fd h1:syQPa6Q+/UGl9DNgRSLpRZo8SH+5URNOPaoPp5SgcUA=
 github.com/cchatfield/http-digest-auth-client v0.0.0-20190515222821-779d3d49c2fd/go.mod h1:NLMFtkXPpM+kN0H35nn+5adBaHB1o1IvGF+k7GgFjm8=
+github.com/cchatfield/http-digest-auth-client v0.0.0-20200506195636-757f51463bbf h1:gYf2JtsoWeaicbrvtTYJfGYfkbsdo6Q2ESL7AT+TRHo=
+github.com/cchatfield/http-digest-auth-client v0.0.0-20200506195636-757f51463bbf/go.mod h1:NLMFtkXPpM+kN0H35nn+5adBaHB1o1IvGF+k7GgFjm8=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
