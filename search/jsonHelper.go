@@ -42,11 +42,11 @@ func wrapJSONInterface(item interface{}) (map[string]interface{}, error) {
 }
 
 func wrapJSON(i interface{}) ([]byte, error) {
-	wrappedInterface, err := wrapJSONInterface(i)
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(wrappedInterface)
+	// wrappedInterface, err := wrapJSONInterface(i)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	return json.Marshal(i)
 }
 
 type stringToInterface func(string) interface{}

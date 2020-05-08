@@ -2,6 +2,7 @@ package search
 
 import (
 	"bytes"
+	"encoding/json"
 	"encoding/xml"
 
 	handle "github.com/cchatfield/go-marklogic-go/handle"
@@ -16,7 +17,7 @@ var mapperFunction = func(str string) interface{} {
 type QueryHandle struct {
 	*bytes.Buffer
 	Format    int
-	Query     Query
+	Query     StructuredQuery
 	timestamp string
 }
 
@@ -36,10 +37,10 @@ func (qh *QueryHandle) resetBuffer() {
 func (qh *QueryHandle) Deserialize(bytes []byte) {
 	qh.resetBuffer()
 	qh.Write(bytes)
-	qh.Query = Query{}
+	qh.Query = StructuredQuery{}
 	if qh.GetFormat() == handle.JSON {
 		unwrapped, _ := unwrapJSON(bytes, mapperFunction)
-		qh.Query = unwrapped.(Query)
+		qh.Query = unwrapped.(StructuredQuery)
 	} else {
 		xml.Unmarshal(bytes, &qh.Query)
 	}
@@ -47,10 +48,10 @@ func (qh *QueryHandle) Deserialize(bytes []byte) {
 
 // Serialize returns []byte of XML or JSON that represents the Query struct
 func (qh *QueryHandle) Serialize(query interface{}) {
-	qh.Query = query.(Query)
+	qh.Query = query.(StructuredQuery)
 	qh.resetBuffer()
 	if qh.GetFormat() == handle.JSON {
-		readBytes, _ := wrapJSON(qh.Query)
+		readBytes, _ := json.Marshal(qh.Query)
 		qh.Write(readBytes)
 	} else {
 		enc := xml.NewEncoder(qh)
@@ -67,7 +68,7 @@ func (qh *QueryHandle) Read(bytes []byte) (n int, err error) {
 }
 
 // Get returns string of XML or JSON
-func (qh *QueryHandle) Get() *Query {
+func (qh *QueryHandle) Get() *StructuredQuery {
 	return &qh.Query
 }
 
@@ -94,6 +95,12 @@ type CombinedQuery struct {
 	QText           []string `xml:"http://marklogic.com/appservices/search qtext" json:"qtext,omitempty"`
 	SPARQL          string   `xml:"http://marklogic.com/appservices/search sparql" json:"sparql,omitempty"`
 	// TODO: Options SearchOptions
+}
+
+// StructuredQuery  represents the query with any other available options
+type StructuredQuery struct {
+	Query   Query   `xml:"http://marklogic.com/appservices/search query" json:"query"`
+	Options Options `xml:"http://marklogic.com/appservices/search options" json:"options,omitempty"`
 }
 
 // Query represents http://docs.marklogic.com/guide/search-dev/structured-query#id_85307
@@ -406,6 +413,26 @@ type GeoPathQuery struct {
 	Circles      []*Circle  `xml:"http://marklogic.com/appservices/search circle,omitempty" json:"circle,omitempty"`
 	Polygons     []*Polygon `xml:"http://marklogic.com/appservices/search polygon,omitempty" json:"polygon,omitempty"`
 }
+
+// Options represent search options in a structured query - https://docs.marklogic.com/guide/search-dev/appendixa#id_50098
+type Options struct {
+	TransformResults TransformResults `xml:"http://marklogic.com/appservices/search transform-results,omitempty" json:"transform-results,omitempty"`
+}
+
+// TransformResults represent how the results will be returned
+type TransformResults struct {
+	Apply TransformResultsApplyType `xml:"apply,attr" json:"apply,omitempty"`
+}
+
+// TransformResultsApplyType  Apply type for transfprms
+type TransformResultsApplyType string
+
+const (
+	// SnippetTransform - snippet
+	SnippetTransform TransformResultsApplyType = "snippet"
+	// RawTransform - underlying object
+	RawTransform TransformResultsApplyType = "raw"
+)
 
 // UnmarshalXML Query converts to XML
 func (q *Query) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {

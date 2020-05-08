@@ -93,22 +93,23 @@ type Response struct {
 	Total      int64    `xml:"total,attr" json:"total,omitempty"`
 	Start      int64    `xml:"start,attr" json:"start,omitempty"`
 	PageLength int64    `xml:"page-length,attr" json:"page-length,omitempty"`
-	Results    []Result `xml:"http://marklogic.com/appservices/search result" json:"result,omitempty"`
-	Facets     []Facet  `xml:"http://marklogic.com/appservices/search facet" json:"facet,omitempty"`
+	Results    []Result `xml:"http://marklogic.com/appservices/search result" json:"results,omitempty"`
+	Facets     []Facet  `xml:"http://marklogic.com/appservices/search facet" json:"facets,omitempty"`
 }
 
 // Result is an individual document fragment found by the search
 type Result struct {
-	URI        string    `xml:"uri,attr" json:"uri,omitempty"`
-	Href       string    `xml:"href,attr" json:"href,omitempty"`
-	MimeType   string    `xml:"mimetype,attr" json:"mimetype,omitempty"`
-	Format     string    `xml:"format,attr" json:"format,omitempty"`
-	Path       string    `xml:"path,attr" json:"path,omitempty"`
-	Index      int64     `xml:"index,attr" json:"index,omitempty"`
-	Score      int64     `xml:"score,attr" json:"score,omitempty"`
-	Confidence float64   `xml:"confidence,attr" json:"confidence,omitempty"`
-	Fitness    float64   `xml:"fitness,attr" json:"fitness,omitempty"`
-	Snippets   []Snippet `xml:"http://marklogic.com/appservices/search snippet" json:"snippet,omitempty"`
+	URI        string      `xml:"uri,attr" json:"uri,omitempty"`
+	Href       string      `xml:"href,attr" json:"href,omitempty"`
+	MimeType   string      `xml:"mimetype,attr" json:"mimetype,omitempty"`
+	Format     string      `xml:"format,attr" json:"format,omitempty"`
+	Path       string      `xml:"path,attr" json:"path,omitempty"`
+	Index      int64       `xml:"index,attr" json:"index,omitempty"`
+	Score      int64       `xml:"score,attr" json:"score,omitempty"`
+	Confidence float64     `xml:"confidence,attr" json:"confidence,omitempty"`
+	Fitness    float64     `xml:"fitness,attr" json:"fitness,omitempty"`
+	Content    interface{} `json:"content,omitempty"`
+	Snippets   []Snippet   `xml:"http://marklogic.com/appservices/search snippet" json:"snippet,omitempty"`
 }
 
 // Snippet represents a snippet
